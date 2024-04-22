@@ -1,5 +1,3 @@
-<img height="300" src="doc/_e0bb06e0-c99d-4eb9-91a1-b0f2dade0193.jpg" width="300"/>
-
 # Aventuras
 _Proyecto de la convocatoria extraordinaria de Taller de Programación del curso 2023-2024_
 

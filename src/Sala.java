@@ -161,7 +161,9 @@ public class Sala {
      */
     public Monstruo seleccionarMonstruo(Scanner teclado) {
         Monstruo resultado = null;
-        for ()
+        for (){
+
+        }
         return resultado;
     }
 

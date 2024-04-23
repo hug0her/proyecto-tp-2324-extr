@@ -64,20 +64,22 @@ public class Monstruo {
 
     /**
      * Método recibirDanyo para calcular la vida restante
-     * TODO actualizar la vida restante del monstruo despues de un ataque, siempre que el
-     * valor de ataque sea positivo
      *
-     * @param ataque
+     * @param ataque Valor numérico insertado al llamar a la función que se corresponde con el ataque del jugador para
+     *               asi restarle la defensa del monstruo y obtener el daño real realizado al monstruo.
      */
     public void recibirDanyo(int ataque) {
-
+        ataque = ataque - defensa;
+        if (ataque > 0){
+            vida = vida - ataque;
+        }
     }
 
     /**
      * Método sobreescrito para devolver la información de un monstruo
      *
-     * @return Este método devuelve una cadena de caracteres que describe la información del monstruo
-     * [Nombre del monstruo (Vida, Ataque, Destreza)]
+     * @return Este método devuelve una cadena de caracteres que describe las características del monstruo
+     * [Nombre del monstruo (Vida, Ataque, Defensa)]
      */
     @Override
     public String toString() {
@@ -85,16 +87,13 @@ public class Monstruo {
     }
 
     /**
-     * Método que sobreescribe el comportamiento de equals
-     *  TODO Método para comparar si el objeto pasado como parámetro es igual a este,
-     *      hay que comparar los parámetros internos del objeto (nombre, vida, ataque, defensa)
+     * Método que sobreescribe el comportamiento de equals.
      *
-     * @param obj
-     * @return True en caso de ser igual, false en otro caso
+     * @param obj Objeto introducido al llamar a la función para compararlo con otro objeto.
+     * @return Este método devuelve un valor booleano. True en caso de ser igual, false en caso contrario.
      */
     @Override
     public boolean equals(Object obj) {
-
-        return
+        return obj.equals(getAtaque()) && obj.equals(getVida()) && obj.equals(getDefensa()) && obj.equals(getNombre());
     }
 }

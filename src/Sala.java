@@ -10,9 +10,10 @@ public class Sala {
     private final Trampa[] trampas;
     private final int fila;
     private final int columna;
+    private int numItems, numMonstruos, numTrampas;
 
     /**
-     * Constructor de clase para inicializar los atributos de clase
+     * Constructor de clase para inicializar los atributos de clase.
      *
      * @param descripcion       Cadena de caracteres que tiene asignada cada objeto sala que se crea y describe brevemente
      *                          nuestro objeto.
@@ -37,7 +38,7 @@ public class Sala {
     }
 
     /**
-     * Método agregarItem para incluir items en la sala
+     * Método agregarItem para incluir items en la sala.
      *
      * @param item Objeto "Item" que se especifica al llamar a la función y que se intentara insertar en caso de que
      *             no se repita y no exceda la capacidad máxima del vector "items".
@@ -46,30 +47,20 @@ public class Sala {
      */
     public boolean agregarItem(Item item) {
         boolean resultado = true;
-        if (hayItems()) {
-            int j = 0;
-            boolean primero = true;
-            for (int i = 0; i < items.length; i++) {
-                if (items[i] == item) {
-                    resultado = false;
-                } else if (items[i] == null && primero) {
-                    primero = false;
-                    j = i;
-                }
+        for (int i = 0; i < numItems; i++) {
+            if (items[i] == item) {
+                resultado = false;
             }
-            if (resultado) {
-                items[j] = item;
-            }
-        } else {
-            items[0] = item;
+        }
+        if (resultado) {
+            items[numItems] = item;
+            numItems++;
         }
         return resultado;
     }
 
     /**
-     * Método agregarMonstruo para incluir un monstruo en la sala
-     * TODO comprobar si existe el monstruo en la sala o si la lista de monstruos no está ya llena en caso afirmativo
-     *  devolver false. En caso de no existir incluirlo en la lista y devolver true
+     * Método agregarMonstruo para incluir un monstruo en la sala.
      *
      * @param monstruo Objeto "Monstruo" que se especifica al llamar a la función y que se intentara insertar en caso de que
      *                 no se repita y no exceda la capacidad máxima del vector "monstruos".
@@ -78,30 +69,20 @@ public class Sala {
      */
     public boolean agregarMonstruo(Monstruo monstruo) {
         boolean resultado = true;
-        if (hayMonstruos()) {
-            int j = 0;
-            boolean primero = true;
-            for (int i = 0; i < monstruos.length; i++) {
-                if (monstruos[i] == monstruo) {
-                    resultado = false;
-                } else if (monstruos[i] == null && primero) {
-                    primero = false;
-                    j = i;
-                }
+        for (int i = 0; i < numMonstruos; i++) {
+            if (monstruos[i] == monstruo) {
+                resultado = false;
             }
-            if (resultado) {
-                monstruos[j] = monstruo;
-            }
-        } else {
-            monstruos[0] = monstruo;
+        }
+        if (resultado) {
+            monstruos[numMonstruos] = monstruo;
+            numMonstruos++;
         }
         return resultado;
     }
 
     /**
-     * Método agregarTrampa para incluir una trampa en la sala
-     * TODO comprobar si existe la trampa en la sala o si la lista de trampas no está ya llena en caso afirmativo
-     *  devolver false. En caso de no existir incluirlo en la lista y devolver true
+     * Método agregarTrampa para incluir una trampa en la sala.
      *
      * @param trampa Objeto "Trampa" que se especifica al llamar a la función y que se intentara insertar en caso de que
      *               no se repita y no exceda la capacidad máxima del vector "trampas".
@@ -110,22 +91,14 @@ public class Sala {
      */
     public boolean agregarTrampa(Trampa trampa) {
         boolean resultado = true;
-        if (hayTrampas()) {
-            int j = 0;
-            boolean primero = true;
-            for (int i = 0; i < trampas.length; i++) {
-                if (trampas[i] == trampa) {
-                    resultado = false;
-                } else if (trampas[i] == null && primero) {
-                    primero = false;
-                    j = i;
-                }
+        for (int i = 0; i < numTrampas; i++) {
+            if (trampas[i] == trampa) {
+                resultado = false;
             }
-            if (resultado) {
-                trampas[j] = trampa;
-            }
-        } else {
-            trampas[0] = trampa;
+        }
+        if (resultado) {
+            trampas[numTrampas] = trampa;
+            numTrampas++;
         }
         return resultado;
     }
@@ -141,71 +114,76 @@ public class Sala {
     }
 
     /**
-     * Método hayMonstruos para comprobar si hay algún monstruo en la sala
-     * TODO comprobar si hay algún monstruo en la lista
+     * Método hayMonstruos para comprobar si hay algún monstruo en la sala.
      *
-     * @return
+     * @return Este método devuelve un valor booleano que corresponde con un valor true en caso de que haya monstruos
+     * y false en caso de que no los haya.
      */
     public boolean hayMonstruos() {
-        return
+        return numMonstruos > 0;
     }
 
     /**
-     * Método seleccionarMonstruo para introducir desde pantalla el nombre de un monstruo
-     * TODO Mostrar por pantalla todos los monstruos y luego solicitar que se introduzca el nombre del monstruo que se
-     *  quiere seleccionar.
+     * Método seleccionarMonstruo para introducir desde pantalla el nombre de un monstruo.
      *
      * @param teclado Objeto de tipo "Scanner" que lee lo que el usuario escriba en la consola en este caso el
      *                monstruo seleccionado
      * @return Este método devuelve el monstruo que ha sido seleccionado por el usuario tras imprimir todos por pantalla.
      */
     public Monstruo seleccionarMonstruo(Scanner teclado) {
-        Monstruo resultado = null;
-        for (){
+        listarMonstruos();
+        return buscarMonstruo(Utilidades.leerCadena(teclado, "Escribe el nombre del monstruo que quieres atacar: "));
+    }
 
+    /**
+     * Método buscarMonstruo para buscar un monstruo dado el nombre del mismo.
+     *
+     * @param nombreMonstruo Cadena de caracteres introducida al llamar a la función y que tiene que corresponder con
+     *                       el nombre del monstruo que va a devolver el método.
+     * @return Este método devuelve el objeto "monstruo" que coincida con la cadena de caracteres introducida
+     * al llamar a la función. En caso de que no se encuentre ningún objeto "monstruo" que cumpla la característica
+     * el método devolverá "null".
+     */
+    public Monstruo buscarMonstruo(String nombreMonstruo) {
+        Monstruo resultado = null;
+        for (int i = 0; i < numMonstruos; i++) {
+            if (monstruos[i].getNombre().equals(nombreMonstruo)) {
+                resultado = monstruos[i];
+            }
         }
         return resultado;
     }
 
     /**
-     * Método buscarMonstruo para buscar un monstruo dado el nombre del mismo
-     * TODO devolver el monstruo según el nombre pasado como parámetro o devolver null si no se encuentra
-     *
-     * @param nombreMonstruo
-     * @return
-     */
-    public Monstruo buscarMonstruo(String nombreMonstruo) {
-
-        return
-    }
-
-    /**
-     * Método listarMonstruos para mostrar por pantalla la información de los monstruos
-     * TODO mostrar por pantalla la info de los monstruos utilizando los métodos implementados en la clase "monstruo"
+     * Método "listarMonstruos" para mostrar por pantalla la información de los monstruos.
      */
     private void listarMonstruos() {
-
+        for (int i = 0; i < numMonstruos; i++) {
+            monstruos[i].toString();
+        }
     }
 
     /**
-     * Método eliminarMonstruo para eliminar un monstruo de la lista segun un nombre dado
-     * TODO buscar en la lista el monstruo segun el nombre pasado como parámetro y eliminarlo.
+     * Método "eliminarMonstruo" para eliminar un monstruo de la lista segun un nombre dado
+     * TODO buscar en la lista el monstruo según el nombre pasado como parámetro y eliminarlo.
      *
-     * @param nombreMonstruo
+     * @param nombreMonstruo Cadena de caracteres insertada al llamar a la función y que tiene que coincidir con la
+     *                       descripción del objeto que le va a eliminar.
      */
     public void eliminarMonstruo(String nombreMonstruo) {
-
+        if (buscarMonstruo(nombreMonstruo) != null){
+            for (int i = 0; ; i++)
+        }
     }
 
     /**
-     * Método hayTrampas para saber si la sala dispone de alguna trampa
-     * TODO mostrar si existe alguna trampa en la sala, false en caso contrario
+     * Método "hayTrampas" para saber si la sala dispone de alguna trampa.
      *
-     * @return
+     * @return Este método devuelve un valor booleano que corresponde con un valor true en caso de que haya trampas
+     * y false en caso de que no las haya.
      */
     public boolean hayTrampas() {
-
-        return
+        return numTrampas > 0;
     }
 
     /**
@@ -240,67 +218,83 @@ public class Sala {
 
     /**
      * Método buscarItem para obtener un item según una descripción dada.
-     * <p>
-     * TODO buscar en la lista de items un item con la descripción pasada como parámetro, devolver null si no lo
-     *  encuentra
      *
-     * @param descripcion
-     * @return
+     * @param descripcion Cadena de caracteres introducida al llamar a la función y que tiene que corresponder con
+     *                    la descripción del item que va a devolver el método.
+     * @return Este método devuelve el objeto "item" que coincida con la cadena de caracteres introducida
+     * al llamar a la función. En caso de que no se encuentre ningún objeto "item" que cumpla la característica
+     * el método devolverá "null".
      */
     public Item buscarItem(String descripcion) {
-
-        return
+        Item resultado = null;
+        for (int i = 0; i < numItems; i++) {
+            if (items[i].getDescripcion().equals(descripcion)) {
+                resultado = items[i];
+            }
+        }
+        return resultado;
     }
 
     /**
-     * Método buscarTrampa para obtener una trampa según una descripcion dada
-     * TODO buscar en la lista de trampas una trampa con la descripción pasada como parámetro, devolver null si no lo
-     *  encuentra
+     * Método buscarTrampa para obtener una trampa según una descripción dada.
      *
-     * @param descripcion
-     * @return
+     * @param descripcion Cadena de caracteres introducida al llamar a la función y que tiene que corresponder con
+     *                    la descripción de la trampa que va a devolver el método.
+     * @return Este método devuelve el objeto "trampa" que coincida con la cadena de caracteres introducida
+     * al llamar a la función. En caso de que no se encuentre ningún objeto "trampa" que cumpla la característica
+     * el método devolverá "null".
      */
     public Trampa buscarTrampa(String descripcion) {
-
-        return
+        Trampa resultado = null;
+        for (int i = 0; i < numTrampas; i++) {
+            if (trampas[i].getDescripcion().equals(descripcion)) {
+                resultado = trampas[i];
+            }
+        }
+        return resultado;
     }
 
     /**
      * Método getTrampas
      *
-     * @return Trampa[] trampas
+     * @return Este método devuelve un array de objetos "trampas" en el que se encuentran todas las trampas de la sala.
      */
     public Trampa[] getTrampas() {
         return trampas;
     }
 
     /**
-     * Método seleccionarItem para obtener un item concreto con parámetro pasados por pantalla
-     * TODO Mostrar por pantalla todos los items de la sala para despues pedir que se introduzca una descripcion del
-     *  item que se quiere seleccionar
+     * Método seleccionarItem para obtener un item concreto con parámetro pasados por pantalla.
      *
-     * @param teclado
-     * @return
+     * @param teclado Objeto asociado al Scanner con el que se lee la cadena de caracteres que el usuario
+     *                inserte en la consola.
+     * @return Este método imprime por pantalla todos los items que pertenecen al array que los contiene y después
+     * devuelve el item que coincida con el nombre que el usuario escriba en la consola.
      */
-    public Item seleccionarItem(Scanner teclado) {
-
-        return
+    public Item seleccionarItem(Scanner teclado) { //REVISAR
+        Item resultado = null;
+        listarItems();
+        do {
+            resultado = buscarItem(Utilidades.leerCadena(teclado, "Escribe la descripción del item que quieres coger (NINGUNO  para cancelar):"));
+        } while(resultado == null);
+        return resultado;
     }
 
     /**
-     * Método listarItems para mostrar por pantalla todos los items
-     * TODO utilizar las funciones de la clase Item para poder mostrar por pantalla toda la información de todos los
-     *  items que hay en la sala
+     * Método listarItems para mostrar por pantalla todos los items.
      */
     private void listarItems() {
-
+        for (int i = 0; i < numItems; i++) {
+            items[i].toString();
+        }
     }
 
     /**
      * Método eliminarItem para eliminar un item con la descripcion pasada como parámetro
      * TODO buscar el item que coincida con la descripción pasada por parámetro y eliminarlo de la lista de items
      *
-     * @param descripcion
+     * @param descripcion Cadena de caracteres que se inserta al llamar a la función y que sirve para saber que "item"
+     *                    eliminar.
      */
     public void eliminarItem(String descripcion) {
 

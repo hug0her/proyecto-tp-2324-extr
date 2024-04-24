@@ -14,14 +14,21 @@ public class Motor {
 
     /**
      * Constructor Clase Motor
-     * @param filas
-     * @param columnas
-     * @param maxItemsPorSala
-     * @param maxMonstruosPorSala
-     * @param maxTrampasPorSalas
+     *
+     * @param filas               Número de filas de la matriz de objetos "sala" que contiene todas las salas.
+     * @param columnas            Número de columnas de la matriz de objetos "sala" que contiene todas las salas.
+     * @param maxItemsPorSala     Valor numérico que corresponde con el número máximo de objetos "item" que pueden
+     *                            existir por cada sala.
+     * @param maxMonstruosPorSala Valor numérico que corresponde con el número máximo de objetos "monstruos"
+     *                            que pueden existir por cada sala.
+     * @param maxTrampasPorSalas  Valor numérico que corresponde con el número máximo de objetos "trampas" que pueden
+     *                            existir por cada sala.
      */
     public Motor(int filas, int columnas, int maxItemsPorSala, int maxMonstruosPorSala, int maxTrampasPorSalas) {
-
+        mapa = new Sala[filas][columnas];
+        this.maxItemsPorSala = maxItemsPorSala;
+        this.maxMonstruosPorSala = maxMonstruosPorSala;
+        this.maxTrampasPorSala = maxTrampasPorSalas;
     }
 
     /**
@@ -29,7 +36,9 @@ public class Motor {
      * TODO leer los datos del fichero de mapa pasado por parametro y generar una matriz Sala[][]
      *  con dimension Sala[fila][columna] e inicializar la sala con los valores con la descripción del fichero
      *  y los parámetros de maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala.
-     * @param ficheroMapa
+     *
+     * @param ficheroMapa Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                    del archivo que contiene la información de las salas.
      * @return sala generada
      */
     Sala[][] cargarMapa(String ficheroMapa) {
@@ -41,7 +50,9 @@ public class Motor {
      * Metodo cargarItems para agregar los items del fichero en el mapa
      * TODO Método para leer un fichero de items pasado por parámetro y según
      *  la fila y columna introducir el item en la sala.
-     * @param ficheroItems
+     *
+     * @param ficheroItems Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                     del archivo que contiene la información de los items.
      */
     private void cargarItems(String ficheroItems) {
 
@@ -51,6 +62,7 @@ public class Motor {
      * Método cargarMonstruos para agregar los monstruos del fichero en el mapa
      * TODO Método para leer un fichero de Monstruos pasado por parámetro y según
      *  la fila y columna introducir el monstruo en la sala.
+     *
      * @param ficheroMonstruos
      */
     private void cargarMonstruos(String ficheroMonstruos) {
@@ -61,6 +73,7 @@ public class Motor {
      * Método cargarTrampas para agregar las trampas del fichero en el mapa
      * TODO Método para leer un fichero de trampas pasado por parámetro y según
      *   la fila y columna introducir la trampa en la sala.
+     *
      * @param ficheroTrampas
      */
     private void cargarTrampas(String ficheroTrampas) {
@@ -70,6 +83,7 @@ public class Motor {
     /**
      * Metodo iniciar, para preparar el mapa
      * TODO instanciación del parametro mapa y carga de datos con los ficheros pasados como parámetros
+     *
      * @param ficheroMapa
      * @param ficheroItems
      * @param ficheroMonstruos
@@ -80,28 +94,29 @@ public class Motor {
     }
 
     /**
-     * Método getSala para obtener una sala concreta del mapa
-     * TODO devolver una Sala concreta del mapa
-     * @param fila
-     * @param columna
-     * @return
+     * Método getSala para obtener una sala concreta del mapa.
+     *
+     * @param fila    Valor numérico que se corresponde con la fila en la que está la sala que queremos obtener.
+     * @param columna Valor numérico que se corresponde con la columna en la que está la sala que queremos obtener.
+     * @return Este método devuelve una sala que haya sido seleccionada mediante la final y columna.
      */
     public Sala getSala(int fila, int columna) {
-        return
+        return mapa[fila][columna];
     }
 
     /**
      * Método mostrarMapa para transformar el mapa en String
      * TODO construir un String con la información contenida en el mapa
      *  respetando el formato que aparece en la memoria de la práctica
-     * @param fila
-     * @param columna
+     *
+     * @param fila    Valor numérico que se corresponde con la fila en la que está la sala que queremos obtener.
+     * @param columna Valor numérico que se corresponde con la columna en la que está la sala que queremos obtener.
      * @return
      */
     public String mostrarMapa(int fila, int columna) {
 
-    return
-}
+        return
+    }
 
     /**
      * Método jugar para empezar a jugar con el personaje
@@ -119,6 +134,7 @@ public class Motor {
      *  5.c al igual que en combate hay que tener en cuenta si la vida del personaje lleva a 0
      *  6. Por último puede haber items en la sala, en cuyo caso habrá que preguntar al usuario qué ítems quiere guardarse (o NINGUNO para terminar)
      *  ¡IMPORTANTE! se debe mostrar por pantalla avisos para cada opción dando feedback al usuario de todo lo que ocurra (consultar enunciado)
+     *
      * @param teclado
      * @param personaje
      * @param random
@@ -133,6 +149,7 @@ public class Motor {
      *  en este método hay que capturar por pantalla la acción que va a tomar el usuario de entre las posibles
      *  para ello hay que tener en cuenta que se debe avisar al usuario si puede realizar o no la acción.
      *  Se devolverá la sala destino a la que se ha movido el personaje.
+     *
      * @param teclado
      * @param salaActual
      * @return

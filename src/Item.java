@@ -69,6 +69,7 @@ public class Item {
      */
     @Override
     public boolean equals(Object obj) {
-        return obj.equals(getDescripcion()) && obj.equals(getPeso()) && obj.equals(getValor());
+        Item item = (Item)obj;
+        return item.getDescripcion() == getDescripcion() && item.getPeso() == getPeso() && item.getValor() == getValor();
     }
 }

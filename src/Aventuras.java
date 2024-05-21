@@ -12,12 +12,19 @@ import java.util.Scanner;
 public class Aventuras {
 
     /**
-     * Main desde donde ejecutar el programa
-     * TODO instanciación e inicialización de objetos para la ejecución,
-     *  ejecución del motor, muestra de puntuaciones y lectura de instrucciones
-     *  por teclado para jugar. Finalmente guardar la puntuación
+     * Main desde donde ejecutar el programa.
      *
-     * @param args
+     * @param args Argumentos que se insertan y definen los parámetros del juego son en este orden:
+     * 1.filas: Número de filas del mapa.
+     * 2.columnas: Número de columnas del mapa.
+     * 3.max_items: Número máximo de ítems que puede haber en cada sala.
+     * 4.max_monstruos: Número máximo de monstruos que puede haber en cada sala.
+     * 5.max_trampas: Número máximo de trampas que puede haber en cada sala.
+     * 6.fichero_salas: Fichero de texto con la información de las salas.
+     * 7.fichero_items: Fichero de texto con la información de los ítems.
+     * 8.fichero_monstruos: Fichero de texto con la información de los monstruos.
+     * 9.fichero_trampas: Fichero de texto con la información de las trampas.
+     * 10.fichero_puntuaciones: Fichero de texto con las puntuaciones de otras partidas.
      */
     public static void main(String[] args) {
         Scanner teclado = new Scanner(System.in);
@@ -26,7 +33,7 @@ public class Aventuras {
             System.out.println("Número de argumentos incorrecto");
             return;
         }
-
+        mostrarPuntuaciones(args[9]);
         Motor motor = new Motor(Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
         motor.iniciar(args[5], args[6], args[7], args[8]);
 

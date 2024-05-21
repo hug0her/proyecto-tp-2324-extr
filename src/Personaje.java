@@ -148,11 +148,14 @@ public class Personaje {
      * intenta recoger y false en caso de que pese demasiado o no existan huecos libres.
      */
     public boolean anyadirItem(Item item) {
-        boolean resultado = true;
-        double pesoTotal = getPesoMochila();
-        if (pesoTotal + item.getPeso() <= maxPesoPorPersonaje && numItems < items.length) {
+        boolean resultado = false;
+        if (getPesoMochila() + item.getPeso() <= maxPesoPorPersonaje && numItems < items.length) {
             items[numItems] = item;
             numItems++;
+            resultado = true;
+            System.out.println("¡Te guardas el objeto! | " + item + " |");
+        }else {
+            System.out.println("No has podido recoger el item seleccionado");
         }
         return resultado;
     }
@@ -207,6 +210,6 @@ public class Personaje {
      * Tu mochila vale 400 monedas"
      */
     public String infoMochila() {
-        return "Mochila de " + getNombre() + ": \n" + items.toString() + "\nPeso total: " + getPesoMochila() + " Kg" + "\nTu mochila vale " + getValorMochila() + " monedas";
+        return "Mochila de " + getNombre() + ": \n" + getItems().toString() + "\nPeso total: " + getPesoMochila() + " Kg" + "\nTu mochila vale " + getValorMochila() + " monedas";
     }
 }

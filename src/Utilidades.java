@@ -32,7 +32,7 @@ public class Utilidades {
      * @param maximo  Número máximo que se inserta al llamar a la función. Cualquier número mayor que "máximo" no será
      *                reconocido como un número valido.
      * @return Este método devuelve el número que el usuario inserta en la consola y que está leído con el objeto
-     * teclado. Este número deberá de estar entre los límites que forman las variables mínimo y máximo.
+     * teclado. Este número deberá de estar entre los límites que forman las variables "mínimo" y "máximo".
      */
 
     public static int leerNumero(Scanner teclado, String mensaje, int minimo, int maximo) {

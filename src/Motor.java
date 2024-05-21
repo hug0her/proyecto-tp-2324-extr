@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Motor {
     Sala[][] mapa;
     private final int maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala;
+    Sala ultima;
 
     /**
      * Constructor Clase Motor
@@ -29,68 +30,145 @@ public class Motor {
         this.maxItemsPorSala = maxItemsPorSala;
         this.maxMonstruosPorSala = maxMonstruosPorSala;
         this.maxTrampasPorSala = maxTrampasPorSalas;
+        ultima = mapa[filas - 1][columnas - 1];
     }
 
     /**
-     * Clase cargarMapa para construir la matriz de mapa a traves del fichero
-     * TODO leer los datos del fichero de mapa pasado por parametro y generar una matriz Sala[][]
-     *  con dimension Sala[fila][columna] e inicializar la sala con los valores con la descripción del fichero
-     *  y los parámetros de maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala.
+     * Clase cargarMapa para construir la matriz de mapa a traves del fichero.
      *
      * @param ficheroMapa Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
      *                    del archivo que contiene la información de las salas.
-     * @return sala generada
+     * @return Matriz de las salas que se ha generado tras leer el fichero que se ha insertado al llamar a la función.
      */
     Sala[][] cargarMapa(String ficheroMapa) {
-
-        return
+        BufferedReader entrada = null;
+        String cadena;
+        try {
+            entrada = new BufferedReader(new FileReader(ficheroMapa));
+            while ((cadena = entrada.readLine()) != null) {
+                String[] partes = cadena.split(";");
+                Sala sala = new Sala(partes[2], maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala, Integer.parseInt(partes[0]), Integer.parseInt(partes[1]));
+                mapa[sala.getFila()][sala.getColumna()] = sala;
+            }
+        } catch (Exception e) {
+            System.out.println("Error de lectura de fichero " + ficheroMapa);
+            return null;
+        } finally {
+            try {
+                if (entrada != null) {
+                    entrada.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error de cierre de fichero " + ficheroMapa);
+            }
+        }
+        return mapa;
     }
 
     /**
-     * Metodo cargarItems para agregar los items del fichero en el mapa
-     * TODO Método para leer un fichero de items pasado por parámetro y según
-     *  la fila y columna introducir el item en la sala.
+     * Método cargarItems para agregar los items del fichero en el mapa.
      *
      * @param ficheroItems Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
      *                     del archivo que contiene la información de los items.
      */
     private void cargarItems(String ficheroItems) {
-
+        BufferedReader entrada = null;
+        String cadena;
+        try {
+            entrada = new BufferedReader(new FileReader(ficheroItems));
+            while ((cadena = entrada.readLine()) != null) {
+                String[] partes = cadena.split(";");
+                Item item = new Item(partes[2], Double.parseDouble(partes[4]), Double.parseDouble(partes[3]));
+                mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarItem(item);
+            }
+        } catch (Exception e) {
+            System.out.println("Error de lectura de fichero " + ficheroItems);
+        } finally {
+            try {
+                if (entrada != null) {
+                    entrada.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error de cierre de fichero " + ficheroItems);
+            }
+        }
     }
 
     /**
-     * Método cargarMonstruos para agregar los monstruos del fichero en el mapa
-     * TODO Método para leer un fichero de Monstruos pasado por parámetro y según
-     *  la fila y columna introducir el monstruo en la sala.
+     * Método cargarMonstruos para agregar los monstruos del fichero en el mapa.
      *
-     * @param ficheroMonstruos
+     * @param ficheroMonstruos Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                         del archivo que contiene la información de los monstruos.
      */
     private void cargarMonstruos(String ficheroMonstruos) {
-
+        BufferedReader entrada = null;
+        String cadena;
+        try {
+            entrada = new BufferedReader(new FileReader(ficheroMonstruos));
+            while ((cadena = entrada.readLine()) != null) {
+                String[] partes = cadena.split(";");
+                Monstruo monstruo = new Monstruo(partes[2], Integer.parseInt(partes[3]), Integer.parseInt(partes[4]), Integer.parseInt(partes[5]));
+                mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarMonstruo(monstruo);
+            }
+        } catch (Exception e) {
+            System.out.println("Error de lectura de fichero " + ficheroMonstruos);
+        } finally {
+            try {
+                if (entrada != null) {
+                    entrada.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error de cierre de fichero " + ficheroMonstruos);
+            }
+        }
     }
 
     /**
-     * Método cargarTrampas para agregar las trampas del fichero en el mapa
-     * TODO Método para leer un fichero de trampas pasado por parámetro y según
-     *   la fila y columna introducir la trampa en la sala.
+     * Método cargarTrampas para agregar las trampas del fichero en el mapa.
      *
-     * @param ficheroTrampas
+     * @param ficheroTrampas Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                       del archivo que contiene la información de las trampas.
      */
     private void cargarTrampas(String ficheroTrampas) {
-
+        BufferedReader entrada = null;
+        String cadena;
+        try {
+            entrada = new BufferedReader(new FileReader(ficheroTrampas));
+            while ((cadena = entrada.readLine()) != null) {
+                String[] partes = cadena.split(";");
+                Trampa trampa = new Trampa(partes[2], Integer.parseInt(partes[3]));
+                mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarTrampa(trampa);
+            }
+        } catch (Exception e) {
+            System.out.println("Error de lectura de fichero " + ficheroTrampas);
+        } finally {
+            try {
+                if (entrada != null) {
+                    entrada.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error de cierre de fichero " + ficheroTrampas);
+            }
+        }
     }
 
     /**
-     * Metodo iniciar, para preparar el mapa
-     * TODO instanciación del parametro mapa y carga de datos con los ficheros pasados como parámetros
+     * Metodo iniciar, para preparar el mapa.
      *
-     * @param ficheroMapa
-     * @param ficheroItems
-     * @param ficheroMonstruos
-     * @param ficheroTrampas
+     * @param ficheroMapa      Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                         del archivo que contiene la información de las salas.
+     * @param ficheroItems     Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                         del archivo que contiene la información de los items.
+     * @param ficheroMonstruos Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                         del archivo que contiene la información de los monstruos.
+     * @param ficheroTrampas   Cadena de caracteres que se inserta al llamar a la función y que se corresponde con el nombre
+     *                         del archivo que contiene la información de las trampas.
      */
     public void iniciar(String ficheroMapa, String ficheroItems, String ficheroMonstruos, String ficheroTrampas) {
-
+        mapa = cargarMapa(ficheroMapa);
+        cargarItems(ficheroItems);
+        cargarMonstruos(ficheroMonstruos);
+        cargarTrampas(ficheroTrampas);
     }
 
     /**
@@ -111,51 +189,105 @@ public class Motor {
      *
      * @param fila    Valor numérico que se corresponde con la fila en la que está la sala que queremos obtener.
      * @param columna Valor numérico que se corresponde con la columna en la que está la sala que queremos obtener.
-     * @return
+     * @return Cadena de caracteres que corresponde con la descripción de la sala que se ha seleccionado con la fila y la
+     * columna.
      */
-    public String mostrarMapa(int fila, int columna) {
-
-        return
+    public String mostrarMapa(int fila, int columna) { //REVISAR
+        return mapa[fila][columna].getDescripcion();
     }
 
     /**
-     * Método jugar para empezar a jugar con el personaje
-     * TODO método complejo en el que hay que seguir la siguiente ejecución:
-     *  1. mostrar el mapa por pantalla
-     *  2. Obtener la sala actual y mientras el personaje tenga vida y no haya llegado a la casilla final
-     *  3. Durante una jugada mostrar la descripcion de la sala actual
-     *  4. Comprobar si hay monstruos en la sala y si es así entrar en combate
-     *  4.a El combate acaba cuando la vida del monstruo o la vida del personaje llega a 0
-     *  4.b cada turno en el combate el personaje ataca al monstruo y restamos su vida
-     *  4.c Si la vida no llega a 0 el monstruo hace daño al personaje
-     *  5. Las salas pueden tener trampas
-     *  5.a Si hay trampa hay que comprobar si un valor aleatorio entre 1 y 50 es inferior a la destreza del personaje, si es asi esquiva la trampa
-     *  5.b Si no esquiva la trampa el personaje recibe daño
-     *  5.c al igual que en combate hay que tener en cuenta si la vida del personaje lleva a 0
-     *  6. Por último puede haber items en la sala, en cuyo caso habrá que preguntar al usuario qué ítems quiere guardarse (o NINGUNO para terminar)
-     *  ¡IMPORTANTE! se debe mostrar por pantalla avisos para cada opción dando feedback al usuario de todo lo que ocurra (consultar enunciado)
+     * Método jugar para empezar a jugar con el personaje.
      *
-     * @param teclado
-     * @param personaje
-     * @param random
+     * @param teclado   Objeto asociado al Scanner con el que se lee la cadena de caracteres que el usuario
+     *                  inserte en la consola.
+     * @param personaje Objeto personaje que se inserta al llamar a la función y que
+     * @param random Objeto Random creado al llamar a la función y que nos permite obtener un número aleatorio para la
+     *               posibilidad de caer en la trampa.
      */
     public void jugar(Scanner teclado, Personaje personaje, Random random) {
-
+        Sala salaActual = mapa[0][0];
+        do {
+            System.out.println(salaActual.getDescripcion());
+            if (salaActual.hayMonstruos()) {
+                Monstruo monstruo;
+                do {
+                    monstruo = salaActual.seleccionarMonstruo(teclado);
+                    do {
+                        monstruo.recibirDanyo(personaje.getAtaque());
+                        if (monstruo.getVida() > 0) {
+                            personaje.recibirDanyo(monstruo.getAtaque());
+                        }
+                    } while (monstruo.getVida() > 0);
+                    salaActual.eliminarMonstruo(monstruo.getNombre());
+                } while (salaActual.hayMonstruos());
+            }
+            if (salaActual.hayTrampas()) {
+                Trampa trampa;
+                for (int i = 0; i < salaActual.getTrampas().length; i++) {
+                    trampa = salaActual.getTrampas()[i];
+                    if (random.nextInt(0, 50) >= personaje.getDestreza()) {
+                        System.out.println("¡Has caído en una trampa! " + trampa.getDescripcion());
+                        System.out.println("Te ha hecho " + trampa.getDanyo() + " puntos de daño");
+                        personaje.recibirDanyo(trampa.getDanyo());
+                    } else {
+                        System.out.println("¡Has esquivado la trampa! " + trampa.getDescripcion());
+                    }
+                }
+            }
+            if (salaActual.hayItems()) {
+                Item item = salaActual.seleccionarItem(teclado);
+                personaje.anyadirItem(item);
+                salaActual.eliminarItem(item.getDescripcion());
+                System.out.println(personaje.infoMochila());
+            }
+            salaActual = seleccionarMovimiento(teclado, salaActual);
+        } while (personaje.getVida() > 0 && salaActual != ultima);
     }
 
     /**
-     * Metodo seleccionarMovimiento para establecer las acciones que tome el jugador con su personaje
-     * TODO El desplazamiento del personaje se entiende como norte (N), sur (S), este (E) u oeste (O)
-     *  en este método hay que capturar por pantalla la acción que va a tomar el usuario de entre las posibles
-     *  para ello hay que tener en cuenta que se debe avisar al usuario si puede realizar o no la acción.
-     *  Se devolverá la sala destino a la que se ha movido el personaje.
+     * Método seleccionarMovimiento para establecer las acciones que tome el jugador con su personaje.
      *
-     * @param teclado
-     * @param salaActual
-     * @return
+     * @param teclado    Objeto asociado al Scanner con el que se lee la cadena de caracteres que el usuario
+     *                   inserte en la consola.
+     * @param salaActual Objeto de tipo sala que se introduce al llamar a la función y que sw trata de la sala en la
+     *                   que se encuentra el personaje actualmente.
+     * @return Este método nos devuelve una sala correspondiente con a la que se quiere mover el jugador siempre que
+     * esta sala exista.
      */
     public Sala seleccionarMovimiento(Scanner teclado, Sala salaActual) {
-
-        return
+        String cadena;
+        Sala resultado = null;
+        do {
+            System.out.println("Introduce el movimiento (N, E, S, O): ");
+            cadena = teclado.nextLine();
+            if (cadena.equals("N") && mapa[salaActual.getFila() - 1][salaActual.getColumna()] != null) {
+                resultado = mapa[salaActual.getFila() - 1][salaActual.getColumna()];
+            }
+            if (cadena.equals("E") && mapa[salaActual.getFila()][salaActual.getColumna() + 1] != null) {
+                resultado = mapa[salaActual.getFila()][salaActual.getColumna() + 1];
+            }
+            if (cadena.equals("S") && mapa[salaActual.getFila() + 1][salaActual.getColumna()] != null) {
+                resultado = mapa[salaActual.getFila() + 1][salaActual.getColumna()];
+            }
+            if (cadena.equals("O") && mapa[salaActual.getFila()][salaActual.getColumna() - 1] != null) {
+                resultado = mapa[salaActual.getFila()][salaActual.getColumna() - 1];
+            }
+            if (resultado == null) {
+                if (cadena.equals("N")) {
+                    System.out.println("No puedes moverte al norte");
+                }
+                if (cadena.equals("E")) {
+                    System.out.println("No puedes moverte al este");
+                }
+                if (cadena.equals("S")) {
+                    System.out.println("No puedes moverte al sur");
+                }
+                if (cadena.equals("O")) {
+                    System.out.println("No puedes moverte al oeste");
+                }
+            }
+        } while (resultado == null);
+        return resultado;
     }
 }

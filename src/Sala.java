@@ -164,15 +164,18 @@ public class Sala {
     }
 
     /**
-     * Método "eliminarMonstruo" para eliminar un monstruo de la lista segun un nombre dado
-     * TODO buscar en la lista el monstruo según el nombre pasado como parámetro y eliminarlo.
+     * Método "eliminarMonstruo" para eliminar un monstruo de la lista segun un nombre dado.
      *
      * @param nombreMonstruo Cadena de caracteres insertada al llamar a la función y que tiene que coincidir con la
      *                       descripción del objeto que le va a eliminar.
      */
     public void eliminarMonstruo(String nombreMonstruo) {
-        if (buscarMonstruo(nombreMonstruo) != null){
-            for (int i = 0; ; i++)
+        int posicion = 0;
+        while (!(monstruos[posicion].getNombre() == nombreMonstruo) && monstruos[posicion] != null) {
+            posicion++;
+        }
+        for (int i = posicion; i < numMonstruos; i++) {
+            monstruos[i] = monstruos[i + 1];
         }
     }
 
@@ -271,12 +274,14 @@ public class Sala {
      * @return Este método imprime por pantalla todos los items que pertenecen al array que los contiene y después
      * devuelve el item que coincida con el nombre que el usuario escriba en la consola.
      */
-    public Item seleccionarItem(Scanner teclado) { //REVISAR
-        Item resultado = null;
+    public Item seleccionarItem(Scanner teclado) {
+        Item resultado;
+        String cadena;
         listarItems();
         do {
-            resultado = buscarItem(Utilidades.leerCadena(teclado, "Escribe la descripción del item que quieres coger (NINGUNO  para cancelar):"));
-        } while(resultado == null);
+            cadena = Utilidades.leerCadena(teclado, "Escribe la descripción del item que quieres coger (NINGUNO  para cancelar):");
+            resultado = buscarItem(cadena);
+        } while (resultado == null && !cadena.equals("Ninguno"));
         return resultado;
     }
 
@@ -290,13 +295,18 @@ public class Sala {
     }
 
     /**
-     * Método eliminarItem para eliminar un item con la descripcion pasada como parámetro
-     * TODO buscar el item que coincida con la descripción pasada por parámetro y eliminarlo de la lista de items
+     * Método eliminarItem para eliminar un item con la descripcion pasada como parámetro.
      *
      * @param descripcion Cadena de caracteres que se inserta al llamar a la función y que sirve para saber que "item"
      *                    eliminar.
      */
     public void eliminarItem(String descripcion) {
-
+        int posicion = 0;
+        while (!(items[posicion].getDescripcion() == descripcion) && items[posicion] != null) {
+            posicion++;
+        }
+        for (int i = posicion; i < numItems; i++) {
+            items[i] = items[i + 1];
+        }
     }
 }

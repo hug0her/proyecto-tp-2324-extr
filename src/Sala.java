@@ -86,7 +86,7 @@ public class Sala {
      *
      * @param trampa Objeto "Trampa" que se especifica al llamar a la función y que se intentara insertar en caso de que
      *               no se repita y no exceda la capacidad máxima del vector "trampas".
-     * @return Este método nos devuelve un valor booleano que depende si ha podido (true) o no (false) insertar el
+     * @return Este método nos devuelve un valor booleano que depende si ha podido (true) o no (false) insertar el objeto
      * trampa insertado cuando se llama a esta función.
      */
     public boolean agregarTrampa(Trampa trampa) {
@@ -171,7 +171,7 @@ public class Sala {
      */
     public void eliminarMonstruo(String nombreMonstruo) {
         int posicion = 0;
-        while (!(monstruos[posicion].getNombre() == nombreMonstruo) && monstruos[posicion] != null) {
+        while (!(monstruos[posicion].getNombre().equals(nombreMonstruo)) && monstruos[posicion] != null) {
             posicion++;
         }
         for (int i = posicion; i < numMonstruos; i++) {
@@ -302,7 +302,7 @@ public class Sala {
      */
     public void eliminarItem(String descripcion) {
         int posicion = 0;
-        while (!(items[posicion].getDescripcion() == descripcion) && items[posicion] != null) {
+        while (!(items[posicion].getDescripcion().equals(descripcion)) && items[posicion] != null) {
             posicion++;
         }
         for (int i = posicion; i < numItems; i++) {

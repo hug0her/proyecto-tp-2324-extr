@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Motor {
     Sala[][] mapa;
     private final int maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala;
-    Sala ultima;
+    final Sala ultima;
 
     /**
      * Constructor Clase Motor
@@ -50,6 +50,8 @@ public class Motor {
                 Sala sala = new Sala(partes[2], maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala, Integer.parseInt(partes[0]), Integer.parseInt(partes[1]));
                 mapa[sala.getFila()][sala.getColumna()] = sala;
             }
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         } catch (Exception e) {
             System.out.println("Error de lectura de fichero " + ficheroMapa);
             return null;
@@ -81,6 +83,8 @@ public class Motor {
                 Item item = new Item(partes[2], Double.parseDouble(partes[4]), Double.parseDouble(partes[3]));
                 mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarItem(item);
             }
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         } catch (Exception e) {
             System.out.println("Error de lectura de fichero " + ficheroItems);
         } finally {
@@ -110,6 +114,8 @@ public class Motor {
                 Monstruo monstruo = new Monstruo(partes[2], Integer.parseInt(partes[3]), Integer.parseInt(partes[4]), Integer.parseInt(partes[5]));
                 mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarMonstruo(monstruo);
             }
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         } catch (Exception e) {
             System.out.println("Error de lectura de fichero " + ficheroMonstruos);
         } finally {
@@ -139,6 +145,8 @@ public class Motor {
                 Trampa trampa = new Trampa(partes[2], Integer.parseInt(partes[3]));
                 mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarTrampa(trampa);
             }
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         } catch (Exception e) {
             System.out.println("Error de lectura de fichero " + ficheroTrampas);
         } finally {
@@ -202,8 +210,8 @@ public class Motor {
      * @param teclado   Objeto asociado al Scanner con el que se lee la cadena de caracteres que el usuario
      *                  inserte en la consola.
      * @param personaje Objeto personaje que se inserta al llamar a la función y que
-     * @param random Objeto Random creado al llamar a la función y que nos permite obtener un número aleatorio para la
-     *               posibilidad de caer en la trampa.
+     * @param random    Objeto Random creado al llamar a la función y que nos permite obtener un número aleatorio para la
+     *                  posibilidad de caer en la trampa.
      */
     public void jugar(Scanner teclado, Personaje personaje, Random random) {
         Sala salaActual = mapa[0][0];

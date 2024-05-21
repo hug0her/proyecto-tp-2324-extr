@@ -95,6 +95,6 @@ public class Monstruo {
     @Override
     public boolean equals(Object obj) {
         Monstruo monstruo = (Monstruo)obj;
-        return monstruo.getAtaque() == getAtaque() && monstruo.getVida() == getVida() && monstruo.getDefensa() == getDefensa() && monstruo.getNombre() == getNombre();
+        return monstruo.getAtaque() == getAtaque() && monstruo.getVida() == getVida() && monstruo.getDefensa() == getDefensa() && monstruo.getNombre().equals(getNombre());
     }
 }

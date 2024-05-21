@@ -48,14 +48,8 @@ public class Personaje {
         int ataque = Utilidades.leerNumero(teclado, "¿Cuánto ataque quieres tener? (1-148):", 1, 148);
         int defensa = Utilidades.leerNumero(teclado, "¿Cuánta defensa quieres tener? (1-49):", 1, 49);
         int destreza = Utilidades.leerNumero(teclado, "¿Cuánta destreza quieres tener? (1-25):", 1, 25);
-        int numItems = 1;
-        if (destreza / 4 > 1) {
-            numItems = destreza / 4;
-        }
-        double pesoMaximo = 1.0;
-        if ((double) ataque / 2 > 1.0) {
-            pesoMaximo = (double) ataque / 2;
-        }
+        int numItems = Math.max(destreza / 4, 1);
+        double pesoMaximo = Math.max((double) ataque / 2, 1.0);
         return new Personaje(nombre, vida, ataque, defensa, destreza, numItems, pesoMaximo);
     }
 

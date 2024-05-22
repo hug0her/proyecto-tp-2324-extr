@@ -87,9 +87,10 @@ public class Aventuras {
      */
     private static void mostrarPuntuaciones(String ficheroPuntuaciones) {
         Scanner in = null;
-        System.out.println("Puntuaciones: ");
         try {
             in = new Scanner(new File(ficheroPuntuaciones));
+            if (in.hasNext()){
+            System.out.println("Puntuaciones: ");}
             while (in.hasNext()) {
                 System.out.println(in);
             }

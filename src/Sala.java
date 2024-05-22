@@ -158,9 +158,8 @@ public class Sala {
      * Método "listarMonstruos" para mostrar por pantalla la información de los monstruos.
      */
     private void listarMonstruos() {
-        for (int i = 0; i < numMonstruos; i++) {
-            monstruos[i].toString();
-        }
+        for (int i = 0; i < numMonstruos; i++)
+            if (monstruos[i]!= null) System.out.println(monstruos[i].toString());
     }
 
     /**
@@ -277,11 +276,12 @@ public class Sala {
     public Item seleccionarItem(Scanner teclado) {
         Item resultado;
         String cadena;
+        System.out.println("\nItems que se encuentran en " + descripcion);
         listarItems();
         do {
             cadena = Utilidades.leerCadena(teclado, "Escribe la descripción del item que quieres coger (NINGUNO  para cancelar):");
             resultado = buscarItem(cadena);
-        } while (resultado == null && !cadena.equals("Ninguno"));
+        } while (resultado == null && !cadena.equals("NINGUNO"));
         return resultado;
     }
 
@@ -290,7 +290,7 @@ public class Sala {
      */
     private void listarItems() {
         for (int i = 0; i < numItems; i++) {
-            items[i].toString();
+            if (items[i] != null) System.out.println(items[i].toString());
         }
     }
 

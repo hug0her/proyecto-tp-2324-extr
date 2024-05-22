@@ -42,12 +42,16 @@ public class Personaje {
      * @return Este método devuelve el objeto personaje creado tras responder a las preguntas.
      */
     public static Personaje crearPersonaje(Scanner teclado) {
-        String nombre = Utilidades.leerCadena(teclado, "¿Cómo te llamas?");
-        System.out.println("¡Hola, " + nombre + "! Tienes 250 puntos para repartir entre vida, ataque, defensa y destreza.");
-        int vida = Utilidades.leerNumero(teclado, "¿Cuánta vida quieres tener? (50-247):", 50, 247);
-        int ataque = Utilidades.leerNumero(teclado, "¿Cuánto ataque quieres tener? (1-148):", 1, 148);
-        int defensa = Utilidades.leerNumero(teclado, "¿Cuánta defensa quieres tener? (1-49):", 1, 49);
-        int destreza = Utilidades.leerNumero(teclado, "¿Cuánta destreza quieres tener? (1-25):", 1, 25);
+        String nombre;
+        int vida, ataque, defensa, destreza;
+        do {
+            nombre = Utilidades.leerCadena(teclado, "¿Cómo te llamas?");
+            System.out.println("¡Hola, " + nombre + "! Tienes 250 puntos para repartir entre vida, ataque, defensa y destreza.");
+            vida = Utilidades.leerNumero(teclado, "¿Cuánta vida quieres tener? (50-247):", 50, 247);
+            ataque = Utilidades.leerNumero(teclado, "¿Cuánto ataque quieres tener? (1-148):", 1, 148);
+            defensa = Utilidades.leerNumero(teclado, "¿Cuánta defensa quieres tener? (1-49):", 1, 49);
+            destreza = Utilidades.leerNumero(teclado, "¿Cuánta destreza quieres tener? (1-25):", 1, 25);
+        }while (vida + destreza+ defensa + ataque > 250);
         int numItems = Math.max(destreza / 4, 1);
         double pesoMaximo = Math.max((double) ataque / 2, 1.0);
         return new Personaje(nombre, vida, ataque, defensa, destreza, numItems, pesoMaximo);
@@ -204,6 +208,6 @@ public class Personaje {
      * Tu mochila vale 400 monedas"
      */
     public String infoMochila() {
-        return "Mochila de " + getNombre() + ": \n" + getItems().toString() + "\nPeso total: " + getPesoMochila() + " Kg" + "\nTu mochila vale " + getValorMochila() + " monedas";
+        return "Mochila de " + getNombre() + ": \n" + items + "\nPeso total: " + getPesoMochila() + " Kg" + "\nTu mochila vale " + getValorMochila() + " monedas";
     }
 }

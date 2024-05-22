@@ -80,7 +80,7 @@ public class Motor {
             entrada = new BufferedReader(new FileReader(ficheroItems));
             while ((cadena = entrada.readLine()) != null) {
                 String[] partes = cadena.split(";");
-                Item item = new Item(partes[2], Double.parseDouble(partes[4]), Double.parseDouble(partes[3]));
+                Item item = new Item(partes[2], Double.parseDouble(partes[3]), Double.parseDouble(partes[4]));
                 mapa[Integer.parseInt(partes[0])][Integer.parseInt(partes[1])].agregarItem(item);
             }
         } catch (FileNotFoundException ex) {
@@ -221,18 +221,26 @@ public class Motor {
                 Monstruo monstruo;
                 do {
                     monstruo = salaActual.seleccionarMonstruo(teclado);
-                    do {
-                        monstruo.recibirDanyo(personaje.getAtaque());
-                        if (monstruo.getVida() > 0) {
-                            personaje.recibirDanyo(monstruo.getAtaque());
+                    if (monstruo != null) {
+                        do {
+                            System.out.println(personaje + " ataca a " + monstruo + " con " + personaje.getAtaque() + " puntos de daño.");
+                            monstruo.recibirDanyo(personaje.getAtaque());
+                            if (monstruo.getVida() > 0) {
+                                personaje.recibirDanyo(monstruo.getAtaque());
+                            }
+                        } while (monstruo.getVida() > 0 && personaje.getVida() > 0);
+                        if (monstruo.getVida() <= 0) {
+                            System.out.println("¡El " + monstruo.getNombre() + " ha sido derrotado!");
+                            salaActual.eliminarMonstruo(monstruo.getNombre());
                         }
-                    } while (monstruo.getVida() > 0);
-                    salaActual.eliminarMonstruo(monstruo.getNombre());
-                } while (salaActual.hayMonstruos());
+                    }
+                } while (salaActual.hayMonstruos() && monstruo == null);
+                System.out.println("No quedan monstruos en esta sala");
             }
             if (salaActual.hayTrampas()) {
                 Trampa trampa;
-                for (int i = 0; i < salaActual.getTrampas().length; i++) {
+                int i = 0;
+                do {
                     trampa = salaActual.getTrampas()[i];
                     if (random.nextInt(0, 50) >= personaje.getDestreza()) {
                         System.out.println("¡Has caído en una trampa! " + trampa.getDescripcion());
@@ -241,12 +249,15 @@ public class Motor {
                     } else {
                         System.out.println("¡Has esquivado la trampa! " + trampa.getDescripcion());
                     }
-                }
+                    i++;
+                } while (salaActual.hayTrampas());
             }
             if (salaActual.hayItems()) {
                 Item item = salaActual.seleccionarItem(teclado);
-                personaje.anyadirItem(item);
-                salaActual.eliminarItem(item.getDescripcion());
+                if (item != null) {
+                    personaje.anyadirItem(item);
+                    salaActual.eliminarItem(item.getDescripcion());
+                }
                 System.out.println(personaje.infoMochila());
             }
             salaActual = seleccionarMovimiento(teclado, salaActual);

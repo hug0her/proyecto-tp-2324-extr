@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
@@ -56,7 +53,7 @@ public class Aventuras {
         try {
             LocalDate ahora = LocalDate.now();
             writer = new FileWriter(ficheroPuntuaciones, true);
-            writer.write(ahora + "\t");
+            writer.write("\n" + ahora + "\t");
             writer.write("{ " + jugador.getNombre());
             writer.write(" (V: " + jugador.getVida() + ",");
             writer.write(" A: " + jugador.getAtaque() + ",");
@@ -86,19 +83,27 @@ public class Aventuras {
      *                            todas las partidas jugadas.
      */
     private static void mostrarPuntuaciones(String ficheroPuntuaciones) {
-        Scanner in = null;
+        BufferedReader in = null;
         try {
-            in = new Scanner(new File(ficheroPuntuaciones));
-            if (in.hasNext()){
-            System.out.println("Puntuaciones: ");}
-            while (in.hasNext()) {
-                System.out.println(in);
+            in = new BufferedReader(new FileReader(ficheroPuntuaciones));
+            StringBuilder textoAux = new StringBuilder();
+            String cadena;
+            if (in.readLine() != null) System.out.println("Puntuaciones:");
+            while ((cadena = in.readLine()) != null) {
+                textoAux.append(cadena).append("\n");
             }
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(textoAux);
+        } catch (FileNotFoundException e){
+            System.out.println("No se ha encontrado el fichero seleccionado");
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
         } finally {
-            if (in != null) {
-                in.close();
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error de cierre de fichero " + ficheroPuntuaciones);
             }
         }
     }

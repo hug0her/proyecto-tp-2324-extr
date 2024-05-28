@@ -5,7 +5,7 @@ import java.util.Scanner;
  */
 public class Personaje {
     private final String nombre;
-    private int vida, numItems;
+    private int vida, numItems, itemsMax;
     private final int ataque, defensa, destreza;
     private final Item[] items;
 
@@ -32,6 +32,7 @@ public class Personaje {
         this.destreza = destreza;
         items = new Item[maxItemsPorPersonaje];
         this.maxPesoPorPersonaje = maxPesoPorPersonaje;
+        itemsMax = maxItemsPorPersonaje;
     }
 
     /**
@@ -147,13 +148,11 @@ public class Personaje {
      */
     public boolean anyadirItem(Item item) {
         boolean resultado = false;
-        if (getPesoMochila() + item.getPeso() <= maxPesoPorPersonaje && numItems < items.length) {
+        if (getPesoMochila() + item.getPeso() <= maxPesoPorPersonaje && numItems < itemsMax) {
             items[numItems] = item;
             numItems++;
             resultado = true;
             System.out.println("¡Te guardas el objeto! | " + item + " |");
-        }else {
-            System.out.println("No has podido recoger el item seleccionado");
         }
         return resultado;
     }
@@ -208,6 +207,8 @@ public class Personaje {
      * Tu mochila vale 400 monedas"
      */
     public String infoMochila() {
+        StringBuilder items= new StringBuilder();
+        for (int i = 0; i < numItems; i++) items.append(getItems()[i] + "\n");
         return "Mochila de " + getNombre() + ": \n" + items + "\nPeso total: " + getPesoMochila() + " Kg" + "\nTu mochila vale " + getValorMochila() + " monedas";
     }
 }

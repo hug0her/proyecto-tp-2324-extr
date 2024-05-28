@@ -10,8 +10,7 @@ import java.util.Scanner;
  */
 public class Motor {
     Sala[][] mapa;
-    private final int maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala;
-    final Sala ultima;
+    private final int maxItemsPorSala, maxMonstruosPorSala, maxTrampasPorSala, numFilas, numColumnas;
 
     /**
      * Constructor Clase Motor
@@ -27,10 +26,11 @@ public class Motor {
      */
     public Motor(int filas, int columnas, int maxItemsPorSala, int maxMonstruosPorSala, int maxTrampasPorSalas) {
         mapa = new Sala[filas][columnas];
+        numColumnas = columnas;
+        numFilas = filas;
         this.maxItemsPorSala = maxItemsPorSala;
         this.maxMonstruosPorSala = maxMonstruosPorSala;
         this.maxTrampasPorSala = maxTrampasPorSalas;
-        ultima = mapa[filas - 1][columnas - 1];
     }
 
     /**
@@ -200,8 +200,23 @@ public class Motor {
      * @return Cadena de caracteres que corresponde con la descripción de la sala que se ha seleccionado con la fila y la
      * columna.
      */
-    public String mostrarMapa(int fila, int columna) { //REVISAR
-        return mapa[fila][columna].getDescripcion();
+    public String mostrarMapa(int fila, int columna) {
+        Sala sala;
+        StringBuilder resultado = new StringBuilder();
+        for (int i = 0; i < numFilas; i++) {
+            for (int j = 0; j < numColumnas; j++) {
+                sala = mapa[i][j];
+                if (sala != null) {
+                    if (sala.getColumna() == columna && sala.getFila() == fila) {
+                        resultado.append(" @ ");
+                    } else {
+                        resultado.append(" # ");
+                    }
+                }else resultado.append(" - ");
+            }
+            resultado.append("\n");
+        }
+        return resultado.toString();
     }
 
     /**
@@ -215,9 +230,10 @@ public class Motor {
      */
     public void jugar(Scanner teclado, Personaje personaje, Random random) {
         Sala salaActual = mapa[0][0];
+        Sala ultima = mapa[numFilas-1][numColumnas-1];
         do {
             System.out.println(salaActual.getDescripcion());
-            if (salaActual.hayMonstruos()) {
+            if (salaActual.hayMonstruos() && personaje.getVida() > 0) {
                 Monstruo monstruo;
                 do {
                     monstruo = salaActual.seleccionarMonstruo(teclado);
@@ -234,25 +250,25 @@ public class Motor {
                             salaActual.eliminarMonstruo(monstruo.getNombre());
                         }
                     }
-                } while (salaActual.hayMonstruos() && monstruo == null);
-                System.out.println("No quedan monstruos en esta sala");
+                } while (salaActual.hayMonstruos() && personaje.getVida() > 0);
+                if (personaje.getVida() > 0) System.out.println("No quedan monstruos en esta sala");
             }
-            if (salaActual.hayTrampas()) {
+            if (salaActual.hayTrampas() && personaje.getVida() > 0) {
                 Trampa trampa;
-                int i = 0;
-                do {
-                    trampa = salaActual.getTrampas()[i];
-                    if (random.nextInt(0, 50) >= personaje.getDestreza()) {
-                        System.out.println("¡Has caído en una trampa! " + trampa.getDescripcion());
-                        System.out.println("Te ha hecho " + trampa.getDanyo() + " puntos de daño");
-                        personaje.recibirDanyo(trampa.getDanyo());
-                    } else {
-                        System.out.println("¡Has esquivado la trampa! " + trampa.getDescripcion());
+                for (int i = 0; i < salaActual.getTrampas().length; i++) {
+                    if (salaActual.getTrampas()[i] != null) {
+                        trampa = salaActual.getTrampas()[i];
+                        if (random.nextInt(0, 50) >= personaje.getDestreza()) {
+                            System.out.println("¡Has caído en una trampa! " + trampa.getDescripcion());
+                            System.out.println("Te ha hecho " + trampa.getDanyo() + " puntos de daño");
+                            personaje.recibirDanyo(trampa.getDanyo());
+                        } else {
+                            System.out.println("¡Has esquivado la trampa! " + trampa.getDescripcion());
+                        }
                     }
-                    i++;
-                } while (salaActual.hayTrampas());
+                }
             }
-            if (salaActual.hayItems()) {
+            if (salaActual.hayItems() && personaje.getVida() > 0) {
                 Item item = salaActual.seleccionarItem(teclado);
                 if (item != null) {
                     personaje.anyadirItem(item);
@@ -260,8 +276,12 @@ public class Motor {
                 }
                 System.out.println(personaje.infoMochila());
             }
-            salaActual = seleccionarMovimiento(teclado, salaActual);
-        } while (personaje.getVida() > 0 && salaActual != ultima);
+            if (personaje.getVida() > 0 && ultima.hayMonstruos()) {
+                salaActual = seleccionarMovimiento(teclado, salaActual);
+            }
+        } while (personaje.getVida() > 0 && ultima.hayMonstruos());
+        if (personaje.getVida() <= 0) System.out.println("---HAS MUERTO---");
+        if (salaActual == ultima) System.out.println("---HAS GANADO---");
     }
 
     /**
@@ -278,6 +298,7 @@ public class Motor {
         String cadena;
         Sala resultado = null;
         do {
+            System.out.print(mostrarMapa(salaActual.getFila(), salaActual.getColumna()));
             System.out.println("Introduce el movimiento (N, E, S, O): ");
             cadena = teclado.nextLine();
             if (cadena.equals("N") && mapa[salaActual.getFila() - 1][salaActual.getColumna()] != null) {

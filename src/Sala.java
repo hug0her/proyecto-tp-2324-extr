@@ -131,8 +131,11 @@ public class Sala {
      * @return Este método devuelve el monstruo que ha sido seleccionado por el usuario tras imprimir todos por pantalla.
      */
     public Monstruo seleccionarMonstruo(Scanner teclado) {
+        Monstruo resultado;
         listarMonstruos();
-        return buscarMonstruo(Utilidades.leerCadena(teclado, "Escribe el nombre del monstruo que quieres atacar: "));
+        String monstruo =Utilidades.leerCadena(teclado, "Escribe el nombre del monstruo que quieres atacar: ");
+        resultado = buscarMonstruo(monstruo);
+        return resultado;
     }
 
     /**
@@ -175,6 +178,7 @@ public class Sala {
         }
         for (int i = posicion; i < numMonstruos; i++) {
             monstruos[i] = monstruos[i + 1];
+            numMonstruos--;
         }
     }
 
@@ -215,7 +219,7 @@ public class Sala {
      * en la matriz que guarda los objetos "item" de cada sala.
      */
     public boolean hayItems() {
-        return items.length > 0;
+        return numItems > 0;
     }
 
     /**
@@ -277,8 +281,8 @@ public class Sala {
         Item resultado;
         String cadena;
         System.out.println("\nItems que se encuentran en " + descripcion);
-        listarItems();
         do {
+            listarItems();
             cadena = Utilidades.leerCadena(teclado, "Escribe la descripción del item que quieres coger (NINGUNO  para cancelar):");
             resultado = buscarItem(cadena);
         } while (resultado == null && !cadena.equals("NINGUNO"));
@@ -307,6 +311,7 @@ public class Sala {
         }
         for (int i = posicion; i < numItems; i++) {
             items[i] = items[i + 1];
+            numItems--;
         }
     }
 }
